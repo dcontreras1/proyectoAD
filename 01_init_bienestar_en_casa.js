@@ -1,0 +1,141 @@
+use bienestar_en_casa;
+
+db.usuarios.drop();
+db.servicios.drop();
+db.reservas.drop();
+
+const cliente1Id = ObjectId("65a000000000000000000001");
+const cliente2Id = ObjectId("65a000000000000000000002");
+const proveedor1Id = ObjectId("65b000000000000000000001");
+const proveedor2Id = ObjectId("65b000000000000000000002");
+
+const servicio1Id = ObjectId("65c000000000000000000001");
+const servicio2Id = ObjectId("65c000000000000000000002");
+const servicio3Id = ObjectId("65c000000000000000000003");
+
+db.usuarios.insertMany([
+  {
+    _id: cliente1Id,
+    nombre: "Valeria Mendoza",
+    correo: "valeria.mendoza@ejemplo.com",
+    telefono: "+573001112233",
+    rol: "CLIENTE",
+    direccionPrincipal: "Cra 100 # 15-20 Apto 402"
+  },
+  {
+    _id: cliente2Id,
+    nombre: "Andrés Restrepo",
+    correo: "andres.restrepo@ejemplo.com",
+    telefono: "+573004445566",
+    rol: "CLIENTE",
+    direccionPrincipal: "Calle 5 # 42-10"
+  },
+  {
+    _id: proveedor1Id,
+    nombre: "Camila Ortiz",
+    correo: "camila.ortiz@ejemplo.com",
+    telefono: "+573107778899",
+    rol: "PROVEEDOR",
+    direccionPrincipal: "Av. Roosevelt # 28-14",
+    perfilProfesional: {
+      titulo: "Esteticista Facial y Corporal",
+      aniosExperiencia: 6,
+      zonasOrientativas: ["Sur", "Oeste", "Ciudad Jardín"]
+    },
+    disponibilidadHoraria: [
+      { diaSemana: "MONDAY", horaInicio: "08:00", horaFin: "18:00" },
+      { diaSemana: "TUESDAY", horaInicio: "08:00", horaFin: "18:00" },
+      { diaSemana: "WEDNESDAY", horaInicio: "08:00", horaFin: "18:00" },
+      { diaSemana: "THURSDAY", horaInicio: "08:00", horaFin: "18:00" },
+      { diaSemana: "FRIDAY", horaInicio: "08:00", horaFin: "18:00" },
+      { diaSemana: "SATURDAY", horaInicio: "09:00", horaFin: "14:00" }
+    ],
+    noDisponibilidad: [
+      {
+        fechaInicio: ISODate("2026-11-26T00:00:00Z"),
+        fechaFin: ISODate("2026-11-26T23:59:59Z"),
+        descripcion: "Capacitación profesional"
+      }
+    ]
+  },
+  {
+    _id: proveedor2Id,
+    nombre: "Mateo Silva",
+    correo: "mateo.silva@ejemplo.com",
+    telefono: "+573159990011",
+    rol: "PROVEEDOR",
+    direccionPrincipal: "Calle 18 # 105-40",
+    perfilProfesional: {
+      titulo: "Especialista en Bienestar y Relajación",
+      aniosExperiencia: 4,
+      zonasOrientativas: ["Sur", "Pance"]
+    },
+    disponibilidadHoraria: [
+      { diaSemana: "MONDAY", horaInicio: "09:00", horaFin: "19:00" },
+      { diaSemana: "WEDNESDAY", horaInicio: "09:00", horaFin: "19:00" },
+      { diaSemana: "FRIDAY", horaInicio: "09:00", horaFin: "19:00" },
+      { diaSemana: "SATURDAY", horaInicio: "08:00", horaFin: "16:00" }
+    ],
+    noDisponibilidad: []
+  }
+]);
+
+db.servicios.insertMany([
+  {
+    _id: servicio1Id,
+    proveedorId: proveedor1Id,
+    nombre: "Limpieza Facial Profunda",
+    categoria: "Estética Facial",
+    duracionMinutos: 60,
+    precio: 120000,
+    estado: "ACTIVO",
+    informacionAdicional: "Incluye exfoliación e hidratación"
+  },
+  {
+    _id: servicio2Id,
+    proveedorId: proveedor1Id,
+    nombre: "Masaje Relajante Espalda y Cuello",
+    categoria: "Bienestar",
+    duracionMinutos: 45,
+    precio: 95000,
+    estado: "ACTIVO",
+    informacionAdicional: "Aceites esenciales neutros"
+  },
+  {
+    _id: servicio3Id,
+    proveedorId: proveedor2Id,
+    nombre: "Ritual de Spa en Casa",
+    categoria: "Bienestar",
+    duracionMinutos: 90,
+    precio: 180000,
+    estado: "ACTIVO",
+    informacionAdicional: "Sesión integral a domicilio"
+  }
+]);
+
+db.reservas.insertMany([
+  {
+    clienteId: cliente1Id,
+    proveedorId: proveedor1Id,
+    servicioId: servicio1Id,
+    servicioSnapshot: {
+      nombre: "Limpieza Facial Profunda",
+      precio: 120000,
+      duracionMinutos: 60
+    },
+    fechaHoraInicio: ISODate("2026-11-25T10:00:00Z"),
+    fechaHoraFin: ISODate("2026-11-25T11:00:00Z"),
+    direccion: "Cra 100 # 15-20 Apto 402",
+    barrioSector: "Ciudad Jardín",
+    infoComplementaria: "Portería principal, torre B",
+    observaciones: "Puntualidad por favor",
+    estado: "PENDIENTE",
+    motivo: null,
+    fechaCreacion: ISODate("2026-11-19T15:00:00Z"),
+    fechaActualizacion: ISODate("2026-11-19T15:00:00Z")
+  }
+]);
+
+db.reservas.createIndex({ proveedorId: 1, estado: 1, fechaHoraInicio: 1, fechaHoraFin: 1 });
+db.reservas.createIndex({ clienteId: 1 });
+db.reservas.createIndex({ estado: 1 });
