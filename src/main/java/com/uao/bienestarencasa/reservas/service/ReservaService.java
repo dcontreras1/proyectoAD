@@ -5,7 +5,6 @@ import com.uao.bienestarencasa.reservas.dto.CrearReservaRequest;
 import com.uao.bienestarencasa.reservas.exception.RecursoNoEncontradoException;
 import com.uao.bienestarencasa.reservas.exception.ReglaNegocioException;
 import com.uao.bienestarencasa.reservas.model.EstadoReserva;
-import com.uao.bienestarencasa.reservas.model.FranjaDisponibilidad;
 import com.uao.bienestarencasa.reservas.model.PeriodoNoDisponibilidad;
 import com.uao.bienestarencasa.reservas.model.Reserva;
 import com.uao.bienestarencasa.reservas.model.RolUsuario;
