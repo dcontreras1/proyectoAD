@@ -18,15 +18,18 @@ import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 @Service
 public class ReservaService {
+
+    private static final ZoneId ZONA_COLOMBIA = ZoneId.of("America/Bogota");
 
     private static final Set<EstadoReserva> ESTADOS_QUE_OCUPAN_FRANJA =
             EnumSet.of(EstadoReserva.PENDIENTE, EstadoReserva.SUGERIDA, EstadoReserva.ACEPTADA);
@@ -196,10 +199,16 @@ public class ReservaService {
     }
 
     public List<Reserva> consultarPorCliente(String clienteId) {
+        if (!ObjectId.isValid(clienteId)) {
+            return List.of();
+        }
         return reservaRepository.findByClienteId(clienteId);
     }
 
     public List<Reserva> consultarPorProveedor(String proveedorId) {
+        if (!ObjectId.isValid(proveedorId)) {
+            return List.of();
+        }
         return reservaRepository.findByProveedorId(proveedorId);
     }
 
@@ -241,16 +250,16 @@ public class ReservaService {
             }
         }
 
-        LocalDateTime inicioUtc = LocalDateTime.ofInstant(inicio, ZoneOffset.UTC);
-        LocalDateTime finUtc = LocalDateTime.ofInstant(fin, ZoneOffset.UTC);
+        LocalDateTime inicioLocal = LocalDateTime.ofInstant(inicio, ZONA_COLOMBIA);
+        LocalDateTime finLocal = LocalDateTime.ofInstant(fin, ZONA_COLOMBIA);
 
-        if (!inicioUtc.toLocalDate().equals(finUtc.toLocalDate())) {
+        if (!inicioLocal.toLocalDate().equals(finLocal.toLocalDate())) {
             throw new ReglaNegocioException("La reserva debe iniciar y finalizar el mismo día dentro de la disponibilidad");
         }
 
-        DayOfWeek dia = inicioUtc.getDayOfWeek();
-        LocalTime horaInicio = inicioUtc.toLocalTime();
-        LocalTime horaFin = finUtc.toLocalTime();
+        DayOfWeek dia = inicioLocal.getDayOfWeek();
+        LocalTime horaInicio = inicioLocal.toLocalTime();
+        LocalTime horaFin = finLocal.toLocalTime();
 
         boolean dentroHorarioGeneral = proveedor.getDisponibilidadHoraria() != null
                 && proveedor.getDisponibilidadHoraria().stream().anyMatch(franja ->

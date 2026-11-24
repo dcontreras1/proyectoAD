@@ -2,14 +2,19 @@ package com.uao.bienestarencasa.reservas.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 import java.time.Instant;
 
 @Document(collection = "reservas")
 public class Reserva {
     @Id
     private String id;
+    @Field(targetType = FieldType.OBJECT_ID)
     private String clienteId;
+    @Field(targetType = FieldType.OBJECT_ID)
     private String proveedorId;
+    @Field(targetType = FieldType.OBJECT_ID)
     private String servicioId;
     private ServicioSnapshot servicioSnapshot;
     private Instant fechaHoraInicio;

@@ -52,8 +52,8 @@ db.usuarios.insertMany([
     ],
     noDisponibilidad: [
       {
-        fechaInicio: ISODate("2026-11-26T00:00:00Z"),
-        fechaFin: ISODate("2026-11-26T23:59:59Z"),
+        fechaInicio: ISODate("2026-11-26T00:00:00-05:00"),
+        fechaFin: ISODate("2026-11-27T00:00:00-05:00"),
         descripcion: "Capacitación profesional"
       }
     ]
@@ -123,16 +123,16 @@ db.reservas.insertMany([
       precio: 120000,
       duracionMinutos: 60
     },
-    fechaHoraInicio: ISODate("2026-11-25T10:00:00Z"),
-    fechaHoraFin: ISODate("2026-11-25T11:00:00Z"),
+    fechaHoraInicio: ISODate("2026-11-25T10:00:00-05:00"),
+    fechaHoraFin: ISODate("2026-11-25T11:00:00-05:00"),
     direccion: "Cra 100 # 15-20 Apto 402",
     barrioSector: "Ciudad Jardín",
     infoComplementaria: "Portería principal, torre B",
     observaciones: "Puntualidad por favor",
     estado: "PENDIENTE",
     motivo: null,
-    fechaCreacion: ISODate("2026-11-19T15:00:00Z"),
-    fechaActualizacion: ISODate("2026-11-19T15:00:00Z")
+    fechaCreacion: ISODate("2026-11-19T15:00:00-05:00"),
+    fechaActualizacion: ISODate("2026-11-19T15:00:00-05:00")
   }
 ]);
 

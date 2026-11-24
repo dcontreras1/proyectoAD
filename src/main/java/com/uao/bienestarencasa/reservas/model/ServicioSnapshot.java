@@ -1,9 +1,12 @@
 package com.uao.bienestarencasa.reservas.model;
 
 import java.math.BigDecimal;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 public class ServicioSnapshot {
     private String nombre;
+    @Field(targetType = FieldType.DECIMAL128)
     private BigDecimal precio;
     private Integer duracionMinutos;
 

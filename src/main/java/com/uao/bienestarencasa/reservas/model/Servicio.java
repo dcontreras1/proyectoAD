@@ -2,16 +2,20 @@ package com.uao.bienestarencasa.reservas.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 import java.math.BigDecimal;
 
 @Document(collection = "servicios")
 public class Servicio {
     @Id
     private String id;
+    @Field(targetType = FieldType.OBJECT_ID)
     private String proveedorId;
     private String nombre;
     private String categoria;
     private Integer duracionMinutos;
+    @Field(targetType = FieldType.DECIMAL128)
     private BigDecimal precio;
     private String estado;
     private String informacionAdicional;
